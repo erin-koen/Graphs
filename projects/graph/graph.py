@@ -8,28 +8,32 @@ class Graph:
     def __init__(self):
         self.vertices = {}
     def add_vertex(self, vertex):
-        """
-        Add a vertex to the graph.
-        """
-        pass  # TODO
+        self.vertices[vertex]=set()
+
     def add_edge(self, v1, v2):
-        """
-        Add a directed edge to the graph.
-        """
-        pass  # TODO
+        self.vertices[v1].add(v2)
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        # TODO
+
         # create an empty set to store visited nodes
+        visited = set()
         # create an empyt queue and enqueue the starting vertex
-        # while the queue is not empty...
-            # dequeue the first vertex
-            # if that vertex has not been visited
-                # mark it as visitied
-                # add all of its neighbors to the back of the queue
+        q = Queue()
+        q.enqueue(starting_vertex)
+
+        while q.size()>0: # while the queue is not empty...
+            
+            v = q.dequeue() # dequeue the first vertex and set it to v for vertex
+            if v not in visited: # if that vertex has not been visited
+                visited.add(v) # mark it as visited
+                print(v) # do the thing we're supposed to do
+                for neighbor in self.vertices[v]: # find all of its neighbors 
+                    q.enqueue(neighbor) # add them to the queue
+
    
 
     def dft(self, starting_vertex):
@@ -37,14 +41,28 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        visited = set() # declare a new set to keep track of visits
+        stack = Stack() # declare a new stack to keep track of order in which to visit
+        stack.push(starting_vertex) # push starting index into the stack to start the while loop
+
+        while stack.size()>0: # while there are vertices in the stack
+            v = stack.pop() # take one off the end
+            if v not in visited: # if it hasn't been visited
+                visited.add(v) # note it's been visited
+                print(v) # do the thing we need to do
+                for neighbor in self.vertices[v]: # loop through its neighbors
+                    stack.push(neighbor) # add them to the stack
+                
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        # base case - no 
+
+
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
