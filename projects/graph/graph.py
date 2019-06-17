@@ -80,8 +80,8 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         
-        Understand - need to take in two vertices, find all of the possible paths between them, return the length of the shortest 
-        bfs means LIFO. Add each vertex to a list as it's traversed. When list -1 == destination vertex, list is complete. how do you get traversal to run multiple times?
+        Understand - need to take in two vertices, find all of the possible paths between them, return the shortes array
+        bfs means LIFO. Add each vertex to a list as it's traversed. When list -1 == destination vertex, list is complete. how do you get traversal to run multiple times? 
 
         """
         visited = set()
@@ -97,7 +97,7 @@ class Graph:
                 printable.append(v) # do the thing we're supposed to do
                 for neighbor in self.vertices[v]: # find all of its neighbors 
                     q.enqueue(neighbor) # add them to the queue
-        print('bft: ', printable)        
+        print('bfs: ', printable)        
 
 
     def dfs(self, starting_vertex, destination_vertex):
@@ -106,7 +106,21 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        visited = set() # declare a new set to keep track of visits
+        stack = Stack() # declare a new stack to keep track of order in which to visit
+        stack.push(starting_vertex) # push starting index into the stack to start the while loop
+        printable = []
+        while stack.size()>0: # while there are vertices in the stack
+            v = stack.pop() # take one off the end
+            if v == destination_vertex:
+                printable.append(v)
+                break
+            if v not in visited: # if it hasn't been visited
+                visited.add(v) # note it's been visited
+                printable.append(v) # do the thing we need to do
+                for neighbor in self.vertices[v]: # loop through its neighbors
+                    stack.push(neighbor) # add them to the stack
+        print('dfs: ', printable)   
 
 
 
