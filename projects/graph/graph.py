@@ -22,7 +22,16 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # TODO
+        # create an empty set to store visited nodes
+        # create an empyt queue and enqueue the starting vertex
+        # while the queue is not empty...
+            # dequeue the first vertex
+            # if that vertex has not been visited
+                # mark it as visitied
+                # add all of its neighbors to the back of the queue
+   
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
