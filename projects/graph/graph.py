@@ -83,21 +83,31 @@ class Graph:
         Understand - need to take in two vertices, find all of the possible paths between them, return the shortes array
         bfs means LIFO. Add each vertex to a list as it's traversed. When list -1 == destination vertex, list is complete. how do you get traversal to run multiple times? 
 
+
         """
-        visited = set()
-        # create an empyt queue and enqueue the starting vertex
-        q = Queue()
-        q.enqueue(starting_vertex)
-        printable= []
-        while q.size()>0: # while the queue is not empty...
-            
-            v = q.dequeue() # dequeue the first vertex and set it to v for vertex
-            if v not in visited: # if that vertex has not been visited
-                visited.add(v) # mark it as visited
-                printable.append(v) # do the thing we're supposed to do
-                for neighbor in self.vertices[v]: # find all of its neighbors 
-                    q.enqueue(neighbor) # add them to the queue
-        print('bfs: ', printable)        
+        visited = set() # create an empty set to store visited nodes
+        q = Queue() # create an empty queue and enqueue a path to the starting vertex
+        q.enqueue([starting_vertex]) # enqued as an array
+        while q.size() > 0:
+            # dequeue the first path
+            path = q.dequeue()
+            # Grab the vertex from the end of the path and check it
+            v = path[-1]
+            # if it's the target, return the path
+            if v == destination_vertex:
+                return path
+            # if that vertex has not been visited:
+            if v not in visited:
+                # put it in visited
+                visited.add(v)
+                #then add a path to all of its neighbors to the back of the queue
+                for neighbor in self.vertices[v]:
+                    # copy the path
+                    path_copy = list(path)
+                    #append neighbor to the back of the copy
+                    path_copy.append(neighbor)
+                    q.enqueue(path_copy)
+             
 
 
     def dfs(self, starting_vertex, destination_vertex):
@@ -112,6 +122,7 @@ class Graph:
         printable = []
         while stack.size()>0: # while there are vertices in the stack
             v = stack.pop() # take one off the end
+
             if v == destination_vertex:
                 printable.append(v)
                 break
@@ -120,7 +131,8 @@ class Graph:
                 printable.append(v) # do the thing we need to do
                 for neighbor in self.vertices[v]: # loop through its neighbors
                     stack.push(neighbor) # add them to the stack
-        print('dfs: ', printable)   
+        print('dfs: ', printable)
+        return printable   
 
 
 
