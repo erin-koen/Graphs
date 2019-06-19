@@ -10,7 +10,7 @@ from util import Stack, Queue  # These may come in handy
 - build the graph
     - goign to use the graph template from yesterday
 - traverse the graph
-    - need to do breadth first but not return when we hit the target. Store all paths in an array. figure that out when you get to it. 
+    - Depth first to go straight to the bottom of the graph
 '''
 
 
@@ -23,22 +23,27 @@ class Family:
         self.vertices[v1].add(v2)
     
     def findEarliest(self, vert, visited = None, path = None):
+        # need to keep track of how many loops through the array each child takes to get there.
         # given a vertice, find the longest path between it and an ancestor. 
+        # Recursive attempt
         if visited is None:
             visited = set()
         if path is None:
             path = []
-        visited.add(vert)
+        visited.add(vert) 
         path.append(vert)
         for v in self.vertices[vert]:
             print('looping starts: ', v)
             if v not in visited:
                 self.findEarliest(v, visited, path)
-        print(f'path: {path}')
-        return path[-1]
+            print(f'line 37 path: {path}')
+        if self.vertices[vert] == set():
+            return -1
+        else:
+            return path[-1]
+        
 
-
-# assume that the input is a list of tuples
+# assume that the input is a list of tuples in (child, parent) order
 def makeFamily(arr):
     fam = Family()
     for item in arr:
@@ -48,17 +53,12 @@ def makeFamily(arr):
             fam.add_vertex(item[1])
         # need to flip the graph, and edges are unidirectional, so i'm goign to do something crazy and flip these
         fam.add_edge(item[1], item[0])
-    print(fam.vertices)
     return fam
 
 
 
 def earliest_ancestor(arr, num):
     new_fam = makeFamily(arr)
-    visited = new_fam.findEarliest(num)
-    print(f'VISITED: {visited}')
-    return visited
-
-test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
-
-makeFamily(test_ancestors)
+    oldest = new_fam.findEarliest(num)
+    print(f'Oldest: {oldest}')
+    return oldest

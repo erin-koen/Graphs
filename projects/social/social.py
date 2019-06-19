@@ -1,8 +1,18 @@
+import random
+
+
+def FYS(l):
+    for i in range(0, len(l)):
+        # random.randint gives you a random interval between i and len(l)-1 inclusive
+        random_index = random.randint(0, len(l)-1)
+        l[random_index], l[i] = l[i], l[random_index]  # swap
+    return l
 
 
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -46,9 +56,30 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
-        # Add users
+        # create an array of users, starting at zero and going up until numUsers (exlcusive) to match userId
+        newUsers = []
+        for i in range(0, numUsers):
+            newUsers.append(i)
+
+        for user in newUsers:  # loop through that array, create a user out of each, and add it to the graph
+            self.addUser(User(user))
 
         # Create friendships
+        # using the same array (b/c you indexed to zero), for each user, create a randomized array of potential friends, and slice off a random number between 0 and 2*num inclusive of those friends from the front. Loop through that second array (here is the scaling issue) and call the add friendships
+        # for user in newUsers:  # O(n)
+        #     random_friends = FYS(newUsers)  # O(n)
+        #     random_number = random.randint(0, 2*avgFriendships)
+        #     if random_number == 0:
+        #         pass
+        #     else:
+        #         for friend in range(0, random_number):  # O(n)
+        #             if user == random_friends[friend]:
+        #                 pass
+        #             elif random_friends[friend] in self.friendships[user] or user in self.friendships[random_friends[friend]]:
+        #                 pass
+        #             else:
+        #                 self.friendships[user].add(random_friends[friend])
+        #                 self.friendships[random_friends[friend]].add(user)
 
     def getAllSocialPaths(self, userID):
         """
@@ -70,3 +101,8 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
+
+sg = SocialGraph()
+sg.populateGraph(10,2)
+
+print(sg.users)
