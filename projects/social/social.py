@@ -1,4 +1,5 @@
 import random
+from queue import LifoQueue, Queue
 
 
 def FYS(l):
@@ -65,19 +66,21 @@ class SocialGraph:
             self.addUser(User(user))
 
         # Create friendships
-        # using the same array (b/c you indexed to zero), for each user, create a randomized array of potential friends, and slice off a random number between 0 and 2*num inclusive of those friends from the front. Loop through that second array (here is the scaling issue) and call the add friendships
+        # create a randomized array of potential friends, and slice off a random number between 0 and 2*num inclusive of those friends from the front. Loop through that second array (here is the scaling issue) and call the add friendships
         for userId in self.users.keys():  # O(n)
+            #eliminate friends with yourself
             newUsers.remove(userId)
-            random_friends = FYS(newUsers)  # O(n)            
-            random_number = random.randint(0, 2*avgFriendships)
+            #randomize the rest of the array
+            random_friends = FYS(newUsers)  # O(n)
 
+            random_number = random.randint(0, 2*avgFriendships)
+            # in the case userId has no friends
             if random_number == 0:
-                pass
+                pass 
+            # loop through the randomized array the random number of times. Evenly distributed psuedorandom numbers between 0 and n should average out to n/2
             else:
                 for i in range(0, random_number):  # O(n)
-                    if userId == random_friends[i]:
-                        pass
-                    elif random_friends[i] in self.friendships[userId] or user in self.friendships[random_friends[i]]:
+                    if random_friends[i] in self.friendships[userId] or user in self.friendships[random_friends[i]]:
                         pass
                     else:
                         self.friendships[userId].add(random_friends[i])
@@ -93,15 +96,29 @@ class SocialGraph:
         extended network with the shortest friendship path between them.
 
         The key is the friend's ID and the value is the path.
+        { 1: 2, 3, 4}
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        q = Queue()
+        q.put([userID])
+        while q.empty() is False:
+            path = q.get()
+            v = path[-1]
+            for friend in self.friendships[v]:
+                if friend not in visited:
+                    visited[friend] = path
+                    path_copy = list(path)
+                    path_copy.append(friend)
+                    q.put(path_copy)
+           
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(20, 5)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
